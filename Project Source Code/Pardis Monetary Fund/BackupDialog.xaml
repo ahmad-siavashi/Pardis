@@ -1,0 +1,29 @@
+﻿<Window x:Class="Pardis_Monetary_Fund.BackupDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="پشتیبان گیری"  ResizeMode="NoResize" Height="450" Width="320"
+        FlowDirection="RightToLeft"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Resources/#Koodak"
+        ShowInTaskbar="False"
+        >
+    <StackPanel>
+        <Image Source="Resources/restore.png" Width="256" Height="256" Margin="0, 15, 0, 0" />
+        <Button Height="43" Width="120" Name="btnBackup" Click="btnBackup_Click_1" Margin="0, 40, 0, 0">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Resources/backupButton.png" Height="44" Width="44" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <TextBlock Text="پشتیبان گیری" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5, 0, 0, 0" />
+                </StackPanel>
+            </Button.Content>
+        </Button>
+        <Button Name="btnRestore" Click="btnRestore_Click_1" Content="بارگذاری پشتیبان" Height="23" Width="100" Margin="0, 10, 0, 0" />
+        <!--
+        <StackPanel Margin="0, 20, 0, 0" Orientation="Vertical">
+            <TextBlock Text="پشتیبان گیری خودکار" HorizontalAlignment="Center" />
+            <Slider ValueChanged="Slider_ValueChanged_1" Minimum="0" Maximum="3" Width="150" FlowDirection="RightToLeft" IsTabStop="True" IsDirectionReversed="True" IsSnapToTickEnabled="True" TickPlacement="BottomRight"  />
+            <TextBlock Name="txtAutoBackupState" HorizontalAlignment="Center" />
+        </StackPanel>
+        -->
+    </StackPanel>
+</Window>

@@ -1,0 +1,43 @@
+﻿<Window x:Class="Pardis_Monetary_Fund.AddMemberDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfex="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        Title="اضافه کردن عضو" Height="320" Width="300"
+        WindowStartupLocation="CenterScreen"
+        FlowDirection="RightToLeft"
+        ShowInTaskbar="False"
+        FontFamily="Resources/#Koodak"
+        >
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+            <Button Width="75" Margin="10, 0, 5, 5" Name="btnSave" Click="btnSave_Click_1" IsDefault="True" Content="تایید" DockPanel.Dock="Bottom" />
+            <Button Width="75" Margin="0, 0, 5, 5" IsCancel="True" Content="انصراف" DockPanel.Dock="Bottom" />
+        </StackPanel>
+        <GroupBox Margin="10,5,10,10" Header="مشخصات">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="83" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="5, 5, 0, 0" Grid.Column="0" Orientation="Vertical">
+                    <TextBlock Margin="0, 7, 0, 0" Text="شناسه عضویت" />
+                    <TextBlock Margin="0, 7, 0, 0" Text="نام" />
+                    <TextBlock Margin="0, 7, 0, 0" Text="نام خانوادگی" />
+                    <TextBlock Margin="0, 7, 0, 0" Text="نام پدر" />
+                    <TextBlock Margin="0, 7, 0, 0" Text="شماره تماس" />
+                    <TextBlock Margin="0, 7, 0, 0" Text="کد ملی" />
+                    <TextBlock Margin="0, 7, 0, 0" Text="تاریخ عضویت" />
+                </StackPanel>
+                <StackPanel Margin="0, 5, 0, 0" Grid.Column="1" Orientation="Vertical">
+                    <TextBox Margin="10, 5, 10, 0" Height="23" Name="txtRegistrationId"/>
+                    <TextBox Margin="10, 5, 10, 0" Height="23" Name="txtFirstName"/>
+                    <TextBox Margin="10, 5, 10, 0" Height="23" Name="txtLastName"/>
+                    <TextBox Margin="10, 5, 10, 0" Height="23" Name="txtFatherName"/>
+                    <TextBox Margin="10, 5, 10, 0" Height="23" Name="txtPhoneNumber"/>
+                    <TextBox Margin="10, 5, 10, 0" Height="23" Name="txtNationalCode"/>
+                    <wpfex:MaskedTextBox TextChanged="txtRegistrationDate_TextChanged_1" Margin="10, 5, 10, 0" Name="txtRegistrationDate" Height="23" FlowDirection="LeftToRight" Mask="0000/00/00"  />
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+    </DockPanel>
+</Window>

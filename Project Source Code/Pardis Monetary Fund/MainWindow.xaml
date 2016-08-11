@@ -1,0 +1,522 @@
+﻿<Window x:Class="Pardis_Monetary_Fund.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:self="clr-namespace:Pardis_Monetary_Fund"
+        xmlns:selfDataModels="clr-namespace:Pardis_Monetary_Fund.DataModels"
+        xmlns:wpfex="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        Closing="Window_Closing_1"
+        FlowDirection="RightToLeft"
+        FontFamily="Resources/#Koodak"
+        WindowStartupLocation="CenterScreen"
+        Title="صندوق قرض الحسنه" Height="500" Width="800">
+    <Window.CommandBindings>
+        <CommandBinding Command="self:CustomCommands.SaveMembers"  CanExecute="CommandBinding_CanExecute_1" Executed="SaveMembersCommand_Executed"/>
+    </Window.CommandBindings>
+    <Window.Resources>
+        <self:PersianDateUIConverter x:Key="PersianDateUIConverter" />
+        <self:TurnConverter x:Key="TurnConverter" />
+        <self:TurnConverterEditMode x:Key="TurnConverterEditMode" />
+        <self:LoanStateConverter x:Key="LoanStateConverter" />
+        <ObjectDataProvider x:Key="LoanStatesEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="selfDataModels:LOAN_STATES" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
+    <DockPanel>
+        <StatusBar FlowDirection="LeftToRight" DockPanel.Dock="Bottom">
+            <DockPanel LastChildFill="True">
+                <StatusBarItem DockPanel.Dock="Left">
+                    <TextBlock FontFamily="Resources/#Koodak"  Name="statusBarDate" Text="{Binding}" />
+                </StatusBarItem>
+            </DockPanel>
+            <StatusBarItem HorizontalAlignment="Right" >
+                <StackPanel Orientation="Horizontal" >
+                    <Button Name="btnBackup" Click="btnBackup_Click_1">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="Resources/#Koodak" Text="پشتیبان گیری" Margin="5, 0, 5, 0" />
+                                <Image Source="Resources/backupButton.png" Width="16" Height="16" Margin="0, 0, 5, 0" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Name="btnInfo" Click="btnInfo_Click_1" Margin="5, 0, 0, 0" ToolTip="درباره ما">
+                        <Button.Content>
+                                <Image Source="Resources/info.png" Width="21" Height="21" Margin="0, 0, 0, 0" />
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl TabStripPlacement="Left" Name="tabControl">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <ContentPresenter Content="{TemplateBinding Content}">
+                                    <ContentPresenter.LayoutTransform>
+                                        <RotateTransform Angle="90" />
+                                    </ContentPresenter.LayoutTransform>
+                                </ContentPresenter>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Padding" Value="3" />
+                </Style>
+            </TabControl.Resources>
+            <TabItem Name="tabMembers" Selector.Unselected="tabMembers_Unselected_1">
+                <TabItem.Header>
+                    <WrapPanel>
+                        <Image Source="Resources/members.png" Width="26" Margin="5, 0, 10, 5">
+                            <Image.RenderTransform>
+                                <RotateTransform Angle="270" CenterX="15" CenterY="15"/>
+                            </Image.RenderTransform>
+                        </Image>
+
+                        <TextBlock FontSize="14" VerticalAlignment="Center" Margin="0, 0, 10, 0">عضوها</TextBlock>
+                    </WrapPanel>
+                </TabItem.Header>
+                <DockPanel>
+                    <ToolBarTray HorizontalAlignment="Left" FlowDirection="RightToLeft" DockPanel.Dock="Top">
+                        <ToolBar Band="1" BandIndex="1">
+                            <Button Name="btnsaveMembers" ToolTip="ذخیره سازی" Command="self:CustomCommands.SaveMembers">
+                                <WrapPanel>
+                                    <Image Source="Resources/saveButton.png" Width="16" />
+                                </WrapPanel>
+                            </Button>
+                        </ToolBar>
+                        <ToolBar Band="1" BandIndex="3">
+                            <WrapPanel>
+                                <Image Margin="5" Source="Resources/search.png" Width="16" />
+                                <TextBox Name="txtmemberSearch" MinWidth="160" TextChanged="txtmemberSearch_TextChanged_1"></TextBox>
+                            </WrapPanel>
+                        </ToolBar>
+                        <ToolBar Band="1" BandIndex="2">
+                            <Button Name="btnAddMember" Click="btnAddMember_Click_1">
+                                <Button.Content>
+                                    <WrapPanel>
+                                        <Image VerticalAlignment="Center" Margin="0, 0, 5, 0" Source="Resources/add.png" Width="16" />
+                                        <TextBlock Text="اضافه" />
+                                    </WrapPanel>
+                                </Button.Content>
+                            </Button>
+                            <Separator />
+                            <Button Name="btnEditMember" Click="btnEditMember_Click_1">
+                                <Button.Content>
+                                    <WrapPanel>
+                                        <Image Source="Resources/edit.png" Width="16" VerticalAlignment="Center" Margin="2, 0, 3, 0" />
+                                        <TextBlock Text="ویرایش" />
+                                    </WrapPanel>
+                                </Button.Content>
+                            </Button>
+                            <Separator />
+                            <Button Name="btnRemoveMembers" Click="btnRemoveMembers_Click_1">
+                                <Button.Content>
+                                    <WrapPanel>
+                                        <Image Source="Resources/delete.png" Width="16" VerticalAlignment="Center" Margin="2, 0, 3, 0" />
+                                        <TextBlock Text="حذف" />
+                                    </WrapPanel>
+                                </Button.Content>
+                            </Button>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <DataGrid Name="dgMembers" PreviewKeyDown="membersDataGrid_PreviewKeyDown_1" AutoGenerateColumns="False"  CanUserReorderColumns="True" CanUserResizeRows="False" CellEditEnding="membersDataGrid_CellEditEnding_1">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="شناسه عضویت" Width="80" Binding="{Binding registrationId}" />
+                            <DataGridTextColumn Header="نام" Width="70" Binding="{Binding firstName}" />
+                            <DataGridTextColumn Header="نام خانوادگی" Width="110" Binding="{Binding lastName}" />
+                            <DataGridTextColumn Header="نام پدر" Width="70" Binding="{Binding fatherName}" />
+                            <DataGridTextColumn Header="شماره تماس" Width="90" Binding="{Binding phoneNumber}" />
+                            <DataGridTextColumn Header="کد ملی" Width="90" Binding="{Binding nationalCode}" />
+                            <DataGridTemplateColumn Header="تاریخ عضویت" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <wpfex:MaskedTextBox GotFocus="maskedtxtRegistrationDate_GotFocus_1" Name="maskedtxtRegistrationDate" FlowDirection="LeftToRight" Mask="0000/00/00" Text="{Binding registrationDate, UpdateSourceTrigger=LostFocus}" TextChanged="maskedtxtRegistrationDate_TextChanged_1" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Name="tabFunds" Selector.Selected="tabFunds_Selected_1">
+                <TabItem.Header>
+                    <WrapPanel>
+                        <Image Source="Resources/fund.png" VerticalAlignment="Center" HorizontalAlignment="Center" Width="26" Margin="5, 0, 7, 5">
+                            <Image.RenderTransform>
+                                <RotateTransform Angle="270" CenterX="15" CenterY="15"/>
+                            </Image.RenderTransform>
+                        </Image>
+
+                        <TextBlock Margin="0, 0, 10, 0" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" >صندوق ها</TextBlock>
+                    </WrapPanel>
+                </TabItem.Header>
+                <DockPanel>
+                    <ToolBarTray DockPanel.Dock="Top">
+                        <ToolBar>
+                            <Button Name="btnAddFund" VerticalAlignment="Center" Click="btnAddFund_Click_1">
+                                <Button.Content>
+                                    <WrapPanel>
+                                        <Image VerticalAlignment="Center" Margin="0, 0, 5, 0" Source="Resources/add.png" Width="16" />
+                                        <TextBlock Text="اضافه" />
+                                    </WrapPanel>
+                                </Button.Content>
+                            </Button>
+                            <Separator />
+                            <Button Name="btnEditFund" Click="btnEditFund_Click_1">
+                                <Button.Content>
+                                    <WrapPanel>
+                                        <Image Source="Resources/edit.png" Width="16" VerticalAlignment="Center" Margin="2, 0, 3, 0" />
+                                        <TextBlock Text="ویرایش" />
+                                    </WrapPanel>
+                                </Button.Content>
+                            </Button>
+                            <Separator />
+                            <Button Name="btnDeleteFund" Click="btnDeleteFund_Click_1">
+                                <Button.Content>
+                                    <WrapPanel>
+                                        <Image Source="Resources/delete.png" Width="16" VerticalAlignment="Center" Margin="2, 0, 3, 0" />
+                                        <TextBlock Text="حذف" />
+                                    </WrapPanel>
+                                </Button.Content>
+                            </Button>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <ListView Name="lvFunds" MouseDoubleClick="lvFunds_MouseDoubleClick_1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Width="75" Orientation="Horizontal">
+                                                <Image Margin="0, 0, 5, 0" Source="Resources/safe.png" Width="32" Height="32" />
+                                                <TextBlock FlowDirection="RightToLeft" VerticalAlignment="Center">صندوق</TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn  DisplayMemberBinding="{Binding Number}" Width="50" >
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="Number" Click="lvFundsColumnHeader_Click_1" >شماره</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding EstablishmentDate }" Width="100">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="EstablishmentDate" Click="lvFundsColumnHeader_Click_1" >تاریخ افتتاح</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                                <GridViewColumn Width="110">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="InstallmentAmount" Click="lvFundsColumnHeader_Click_1" >مبلغ قسط (تومان)</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextTrimming="CharacterEllipsis" TextAlignment="Left" FontFamily="Arial" Text="{Binding InstallmentAmount, StringFormat='{}{0:n0}'}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="60" >
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="MembersCount" Click="lvFundsColumnHeader_Click_1" >تعداد اعضا</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextAlignment="Left" Text="{Binding MembersCount}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="120">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="LoanAmount" Click="lvFundsColumnHeader_Click_1" >مبلغ وام (تومان)</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextTrimming="CharacterEllipsis" TextAlignment="Left" FontFamily="Arial" Text="{Binding LoanAmount, StringFormat='{}{0:n0}'}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="120">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="Investment" Click="lvFundsColumnHeader_Click_1" >سرمایه (تومان)</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextTrimming="CharacterEllipsis"  FontFamily="Arial" Text="{Binding Investment, StringFormat={}{0:n0}}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Name="tabLoans" Selector.Unselected="tabLoans_Unselected_1"  Selector.Selected="tabLoans_Selected_1">
+                <TabItem.Header>
+                    <WrapPanel>
+                        <Image Source="Resources/loan.png" Width="26" Margin="5, 0, 10, 5">
+                            <Image.RenderTransform>
+                                <RotateTransform Angle="270" CenterX="15" CenterY="15"/>
+                            </Image.RenderTransform>
+                        </Image>
+                        <TextBlock Margin="0, 0, 10, 0" FontSize="14" VerticalAlignment="Center">وام ها</TextBlock>
+                    </WrapPanel>
+                </TabItem.Header>
+                <DockPanel>
+                    <ToolBarTray DockPanel.Dock="Top">
+                        <ToolBar>
+                            <TextBlock Margin="3, 0, 3, 0" Text="صندوق" VerticalAlignment="Center" />
+                            <ComboBox MinWidth="280" Name="cmbFunds" SelectionChanged="cmbFunds_SelectionChanged_1" SelectedIndex="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FlowDirection="RightToLeft"><Run Text="{Binding Number}"/>) در <Run  Text="{Binding EstablishmentDate}"/> با <Run Text="{Binding MembersCount}" /> عضو به ارزش <Run Text="{Binding LoanAmount, StringFormat={}{0:n0}}" /> تومان</TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Separator />
+                            <Button Name="IssueLoanFromFund" Click="IssueLoanFromFund_Click_1">
+                                <Button.Content>
+                                    <WrapPanel>
+                                        <Rectangle Fill="OrangeRed" Width="8" Height="8" Margin="5" />
+                                        <TextBlock Text="صدور وام از صندوق"  />
+                                    </WrapPanel>
+                                </Button.Content>
+                            </Button>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="59*" />
+                            <ColumnDefinition Width="46*" />
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Grid.Column="0">
+                            <ToolBarTray DockPanel.Dock="Bottom">
+                                <ToolBar>
+                                    <Button Name="btnLotteryBetweenRemaind" Click="btnLotteryBetweenRemaind_Click_1" >
+                                        <Button.Content>
+                                            <WrapPanel>
+                                                <Rectangle Fill="HotPink" Width="8" Height="8" Margin="5" />
+                                                <TextBlock Text="قرعه کشی بین اعضای باقی مانده" />
+                                            </WrapPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Separator />
+                                    <Button Name="btnLotteryBetweenTurnlesses" Click="btnLotteryBetweenTurnlesses_Click_1" >
+                                        <Button.Content>
+                                            <WrapPanel>
+                                                <Rectangle Fill="RoyalBlue" Width="8" Height="8" Margin="5" />
+                                                <TextBlock Text="قرعه کشی بین اعضای بدون نوبت" />
+                                            </WrapPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </ToolBar>
+                            </ToolBarTray>
+                            <DataGrid ItemsSource="{Binding ItemsSource, IsAsync=True}" EnableColumnVirtualization="True" EnableRowVirtualization="True" RowDetailsVisibilityChanged="loansDataGrid_RowDetailsVisibilityChanged_1" CellEditEnding="loansDataGrid_CellEditEnding_1" SelectionMode="Single" SelectionChanged="loansDataGrid_SelectionChanged_1"  Name="dgLoans" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="نوبت" SortMemberPath="turn">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding turn, NotifyOnSourceUpdated=True, Converter={StaticResource TurnConverter}}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding turn, Converter={StaticResource TurnConverterEditMode}}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn IsReadOnly="True" Header="شماره عضویت" Width="80" Binding="{Binding registrationId}" />
+                                    <DataGridTextColumn IsReadOnly="True" Header="نام" Width="50" Binding="{Binding firstName}" />
+                                    <DataGridTextColumn IsReadOnly="True" Header="نام خانوادگی" Width="100" Binding="{Binding lastName}" />
+                                    <DataGridTemplateColumn Header="وضعیت وام" Width="80" SortMemberPath="state" >
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox Name="cmbLoanState" ItemsSource="{Binding Source={StaticResource LoanStatesEnum}, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding state, UpdateSourceTrigger=PropertyChanged}">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Converter={StaticResource LoanStateConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                                <DataGrid.RowDetailsTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="20" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="1.5*" />
+                                            </Grid.ColumnDefinitions>
+                                            <WrapPanel VerticalAlignment="Center" Grid.Column="0">
+                                                <Rectangle Margin="5, 0, 0, 0" Width="16" Height="16" Fill="{Binding Color}" />
+                                            </WrapPanel>
+                                            <Separator HorizontalAlignment="Center" Margin="2, 0, 2, 0" Grid.Column="1" Width="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                            <TextBlock Grid.Column="2">بستانکار: <Run Text="{Binding Credit, StringFormat={}{0:n0}}"/> تومان</TextBlock>
+                                            <Separator HorizontalAlignment="Center" Margin="2, 0, 2, 0" Grid.Column="3" Width="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                            <TextBlock Grid.Column="4">بدهکار: <Run Text="{Binding Indebted, StringFormat={}{0:n0}}"/> تومان</TextBlock>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGrid.RowDetailsTemplate>
+                            </DataGrid>
+                        </DockPanel>
+                        <GridSplitter Width="5" />
+                        <DockPanel Grid.Column="1">
+                            <ToolBarTray DockPanel.Dock="Bottom">
+                                <ToolBar>
+                                    <Button VerticalAlignment="Center" Name="btnAddPayment" Click="btnAddPayment_Click_1">
+                                        <Button.Content>
+                                            <WrapPanel>
+                                                <Image VerticalAlignment="Center" Margin="0, 0, 5, 0" Source="Resources/add.png" Width="16" />
+                                                <TextBlock Text="اضافه" />
+                                            </WrapPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Separator />
+                                    <Button Name="btnEditPayment" Click="btnEditPayment_Click_1">
+                                        <Button.Content>
+                                            <WrapPanel>
+                                                <Image Source="Resources/edit.png" Width="16" VerticalAlignment="Center" Margin="2, 0, 3, 0" />
+                                                <TextBlock Text="ویرایش" />
+                                            </WrapPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Separator />
+                                    <Button Name="btnRemovePayment" Click="btnRemovePayment_Click_1">
+                                        <Button.Content>
+                                            <WrapPanel>
+                                                <Image Source="Resources/delete.png" Width="16" VerticalAlignment="Center" Margin="2, 0, 3, 0" />
+                                                <TextBlock Text="حذف" />
+                                            </WrapPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </ToolBar>
+                            </ToolBarTray>
+                            <ListView Name="lvPayments" MouseDoubleClick="lvPayments_MouseDoubleClick_1">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Width="40" DisplayMemberBinding="{Binding Number}">
+                                            <GridViewColumn.Header>
+                                                <GridViewColumnHeader Tag="Number" Click="lvPaymentsColumnHeader_Click_1">شماره</GridViewColumnHeader>
+                                            </GridViewColumn.Header>
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="80">
+                                            <GridViewColumn.Header>
+                                                <GridViewColumnHeader Tag="Date" Click="lvPaymentsColumnHeader_Click_1">تاریخ</GridViewColumnHeader>
+                                            </GridViewColumn.Header>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Date}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="70">
+                                            <GridViewColumn.Header>
+                                                <GridViewColumnHeader ToolTip="مبلغ به تومان" Tag="Amount" Click="lvPaymentsColumnHeader_Click_1">مبلغ</GridViewColumnHeader>
+                                            </GridViewColumn.Header>
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Amount, StringFormat={}{0:n0}}" FontFamily="Arial" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="توضیحات" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Text="{Binding Description}" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListViewItem}">
+                                        <Setter Property="Height" Value="30" />
+                                        <Setter Property="ToolTip">
+                                            <Setter.Value>
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock FontWeight="Bold">پرداخت شماره <Run Text="{Binding Number}"/></TextBlock>
+                                                    <Separator/>
+                                                    <TextBlock>مبلغ <Run Text="{Binding Amount, StringFormat={}{0:n0}}"/></TextBlock>
+                                                    <TextBlock >درتاریخ <Run Text="{Binding Date}"/></TextBlock>
+                                                    <Separator/>
+                                                    <TextBlock>توضیحات:</TextBlock>
+                                                    <TextBlock TextWrapping="Wrap" MaxWidth="200" ><Run Text="{Binding Description}"/></TextBlock>
+                                                </StackPanel>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </DockPanel>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Name="tabReports" Selector.Selected="tabReports_Selected_1">
+                <TabItem.Header>
+                    <WrapPanel>
+                        <Image Source="Resources/report.png" Width="26" Margin="5, 0, 10, 5">
+                            <Image.RenderTransform>
+                                <RotateTransform Angle="270" CenterX="15" CenterY="15"/>
+                            </Image.RenderTransform>
+                        </Image>
+                        <TextBlock Margin="0, 0, 10, 0" FontSize="14" VerticalAlignment="Center">گزارش ها</TextBlock>
+                    </WrapPanel>
+                </TabItem.Header>
+                <DockPanel>
+                    <ToolBarTray DockPanel.Dock="Top">
+                        <ToolBar Band="1" BandIndex="1">
+                            <TextBlock VerticalAlignment="Center" Text="گزارش" Margin="5, 0, 5, 0" />
+                            <ComboBox Name="cmbReport" VerticalAlignment="Center" MinWidth="200" SelectedIndex="0">
+                                <ComboBoxItem>
+                                    <TextBlock Text="پرداخت های صندوق" />
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    <TextBlock Text="مجموع پرداختی های اعضا" />
+                                </ComboBoxItem>
+                            </ComboBox>
+                        </ToolBar>
+                        <ToolBar Band="1" BandIndex="2">
+                            <TextBlock VerticalAlignment="Center" Text="صندوق" Margin="5, 0, 5, 0" />
+                            <ComboBox Name="cmbReportFunds" VerticalAlignment="Center" MinWidth="200" SelectedIndex="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </ToolBar>
+                        <ToolBar Band="2" BandIndex="3">
+                            <TextBlock VerticalAlignment="Center" Text="شناسه عضویت" Margin="5, 0, 5, 0" />
+                            <TextBox Name="txtRegistrationId" Width="100" VerticalAlignment="Center" />
+                        </ToolBar>
+                        <ToolBar Band="2" BandIndex="4">
+                            <TextBlock VerticalAlignment="Center" Text="از تاریخ" Margin="5, 0, 5, 0" />
+                            <wpfex:MaskedTextBox Name="txtFromDate"  Width="100" VerticalAlignment="Center" FlowDirection="LeftToRight" Mask="0000/00/00"  TextChanged="txtFromDate_TextChanged_1" />
+                            <TextBlock VerticalAlignment="Center" Text="تا" Margin="5, 0, 5, 0" />
+                            <wpfex:MaskedTextBox Name="txtToDate"  Width="100" VerticalAlignment="Center" FlowDirection="LeftToRight" Mask="0000/00/00" TextChanged="txtToDate_TextChanged_1" />
+                        </ToolBar>
+                        <ToolBar Band="2" BandIndex="5" >
+                            <Button Name="btnViewReport" Click="btnViewReport_Click_1">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Resources/view.png" Height="21" Width="21" Margin="0, 0, 5, 0" />
+                                        <TextBlock Text="نمایش گزارش" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <DataGrid Name="dgReport" AutoGeneratingColumn="dgReport_AutoGeneratingColumn_1" />
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

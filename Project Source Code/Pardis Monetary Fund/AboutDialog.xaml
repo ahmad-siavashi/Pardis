@@ -1,0 +1,30 @@
+﻿<Window x:Class="Pardis_Monetary_Fund.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="درباره ما" Height="150" Width="400"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        FlowDirection="RightToLeft"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Resources/#Koodak"
+        Background="Beige"
+        WindowStyle="None"
+        MouseUp="Window_MouseUp_1"
+        >
+    <Border BorderThickness="1" BorderBrush="Gray">
+        <DockPanel>
+            <Image DockPanel.Dock="Left" Source="Resources/email.png" VerticalAlignment="Center" Height="128" Width="128" Margin="5, 0, 5, 0"/>
+            <StackPanel Orientation="Vertical" >
+                <TextBlock HorizontalAlignment="Center" Margin="0, 5, 0, 0" FontFamily="Resources/#Koodak">باسمه تعالی</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Margin="0, 10, 0, 0" FontFamily="Resources/#Koodak">صندوق قرض الحسنه پردیس</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Margin="0, 0, 0, 0" FontFamily="Resources/#Koodak">نسخه <Run FontFamily="Arial" Text="1.0.0.0"/></TextBlock>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0, 10, 0, 0">
+                    <Rectangle Width="8" Height="8" Fill="YellowGreen" VerticalAlignment="Center" Margin="0, 0, 5, 0" />
+                    <TextBlock HorizontalAlignment="Center" Margin="0, 0, 0, 0" VerticalAlignment="Center" FontFamily="Resources/#Koodak">توسعه دهنده</TextBlock>
+                </StackPanel>
+                <TextBlock HorizontalAlignment="Center" Margin="0, 0, 0, 0" FontFamily="Resources/#Koodak">احمد سیاوشی</TextBlock>
+                <TextBlock TextDecorations="Underline" Foreground="Blue" HorizontalAlignment="Center" Margin="0, 0, 0, 0" FontFamily="َقهشم">ahmad.siavashi@gmail.com</TextBlock>
+            </StackPanel>
+        </DockPanel>
+    </Border>
+</Window>
