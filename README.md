@@ -2,10 +2,10 @@
 
 ### In His Exalted Name
 
-![Alt text](/Screenshots/1.png?raw=true)
-![Alt text](/Screenshots/2.png?raw=true)
-![Alt text](/Screenshots/3.png?raw=true)
-![Alt text](/Screenshots/4.png?raw=true)
+![Alt text](/Screenshots/1.PNG?raw=true)
+![Alt text](/Screenshots/2.PNG?raw=true)
+![Alt text](/Screenshots/3.PNG?raw=true)
+![Alt text](/Screenshots/4.PNG?raw=true)
 
 ### Introduction
 An accounting application that keeps track of family loans.
